@@ -1,0 +1,59 @@
+name: phoneops
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: phoneops
+      POSTGRES_PASSWORD: phoneops
+      POSTGRES_DB: phoneops
+    ports: ["5432:5432"]
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U phoneops"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build: ./apps/api
+    # `required: false` so `docker compose up` works straight after clone, on
+    # defaults, without a .env file. Copy .env.example to .env to override.
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      DATABASE_URL: postgresql+asyncpg://phoneops:phoneops@postgres:5432/phoneops
+      REDIS_URL: redis://redis:6379/0
+      AUTO_CREATE_SCHEMA: "false"
+      WEB_ORIGINS: http://localhost:3000
+    # One line, deliberately. A folded scalar keeps the newline of a
+    # more-indented line, so `sh -c` receives three commands and dies on
+    # `--host: not found`. `exec` lets SIGTERM reach uvicorn on shutdown.
+    command: sh -c "alembic upgrade head && exec uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    ports: ["8000:8000"]
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
+
+  web:
+    build: ./apps/web
+    environment:
+      # Server-side only: the browser always talks to the web origin, and Next
+      # proxies through to the API. No CORS, no API host leaked to the client.
+      API_ORIGIN: http://api:8000
+    ports: ["3000:3000"]
+    depends_on:
+      api: {condition: service_healthy}
+
+volumes:
+  pgdata:

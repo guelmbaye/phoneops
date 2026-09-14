@@ -1,0 +1,18 @@
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+pydantic-settings==2.7.0
+SQLAlchemy==2.0.36
+alembic==1.14.0
+asyncpg==0.30.0
+aiosqlite==0.20.0
+# Windows and slim Linux images ship no system zone database; without this,
+# every ZoneInfo lookup fails, UTC included.
+tzdata==2024.2
+redis==5.2.1
+httpx==0.28.1
+python-dotenv==1.0.1
+structlog==24.4.0
+# Ed25519 verification of Telnyx webhook signatures. Present transitively in
+# development, which is why its absence only surfaced in the container.
+cryptography==44.0.0

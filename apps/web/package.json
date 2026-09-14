@@ -1,0 +1,33 @@
+{
+  "name": "phoneops-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PHONEOPS AI - Adaptive Recovery Control Room",
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@fontsource/barlow": "5.3.0",
+    "@fontsource/ibm-plex-mono": "5.3.0",
+    "clsx": "2.1.1",
+    "lucide-react": "0.541.0",
+    "next": "15.5.25",
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.2.0",
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/node": "22.10.2",
+    "@types/react": "19.0.2",
+    "@types/react-dom": "19.0.2",
+    "eslint": "^9.17.0",
+    "eslint-config-next": "^15.5.25",
+    "tailwindcss": "4.3.3",
+    "typescript": "5.7.2"
+  }
+}

@@ -1,0 +1,28 @@
+# ---- python -----------------------------------------------------------------
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# ---- node / next ------------------------------------------------------------
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+.eslintcache
+
+# ---- local state ------------------------------------------------------------
+.env
+.env.*
+!.env.example
+!.env.local.example
+*.db
+*.sqlite3
+dist/
+build/
+*.log
+.DS_Store
